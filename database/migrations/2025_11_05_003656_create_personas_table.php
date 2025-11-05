@@ -11,14 +11,21 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('personas', function (Blueprint $table) {
-        $table->id('idPersona');
-        $table->string('PrimerNombre', 100);
-        $table->string('SegundoNombre', 100)->nullable();
-        $table->string('PrimerApellido', 100);
-        $table->string('SegundoApellido', 100)->nullable();
-        $table->timestamps();
-    });
+    if (!Schema::hasTable('Citas')) {
+            Schema::create('Citas', function (Blueprint $table) {
+                $table->id('idCita');
+                $table->unsignedBigInteger('idCliente');
+                $table->unsignedBigInteger('idEmpleado');
+                $table->dateTime('FechaHora');
+                // Asegúrate de que este ENUM tenga valores definidos si no lo hiciste
+                $table->enum('Estado', ['Pendiente', 'Confirmada', 'Completada', 'Cancelada'])->default('Pendiente'); 
+                $table->timestamps();
+
+                // Claves foráneas (si se definen aquí, asegúrate que las tablas referenciadas existan)
+                $table->foreign('idCliente')->references('idCliente')->on('Clientes');
+                $table->foreign('idEmpleado')->references('idEmpleados')->on('Empleados');
+            });
+        }
 }
 
     /**

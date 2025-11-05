@@ -10,15 +10,17 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('servicios', function (Blueprint $table) {
-        $table->id('idServicio');
-        $table->string('Servicio', 100);
-        $table->integer('Duracion');
-        $table->decimal('Precio', 10, 2);
-        $table->timestamps();
-    });
-}
+        {
+        if (!Schema::hasTable('servicios')) {
+            Schema::create('servicios', function (Blueprint $table) {
+                $table->id('idServicio');
+                $table->string('Servicio', 255);
+                $table->integer('Duracion')->comment('Duración en minutos');
+                $table->integer('Precio'); 
+                $table->timestamps();
+            });
+        }
+    }
 
     /**
      * Reverse the migrations.

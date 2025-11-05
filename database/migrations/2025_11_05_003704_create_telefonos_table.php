@@ -9,16 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-{
-    Schema::create('telefonos', function (Blueprint $table) {
-        $table->id('idTelefono');
-        $table->unsignedBigInteger('idPersona');
-        $table->string('Telefono', 20);
-        $table->foreign('idPersona')->references('idPersona')->on('personas')->onDelete('cascade');
-        $table->timestamps();
-    });
-}
+public function up(): void
+    {
+        if (!Schema::hasTable('telefonos')) {
+            Schema::create('telefonos', function (Blueprint $table) {
+                $table->id('idTelefono');
+                $table->unsignedBigInteger('idPersona');
+                $table->integer('Telefono'); 
+                $table->timestamps();
+
+                // Clave foránea a Personas
+                $table->foreign('idPersona')->references('idPersona')->on('personas')->onDelete('cascade');
+            });
+        }
+    }
 
     /**
      * Reverse the migrations.

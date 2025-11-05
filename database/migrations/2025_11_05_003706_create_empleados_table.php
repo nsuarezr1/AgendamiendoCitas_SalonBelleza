@@ -9,16 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-{
-    Schema::create('empleados', function (Blueprint $table) {
-        $table->id('idEmpleado');
-        $table->unsignedBigInteger('idPersona');
-        $table->enum('Especialidad', ['Estilista', 'Manicurista', 'Pedicurista', 'Maquillador', 'Barbero']);
-        $table->foreign('idPersona')->references('idPersona')->on('personas')->onDelete('cascade');
-        $table->timestamps();
-    });
-}
+ public function up(): void
+    {
+        if (!Schema::hasTable('empleados')) {
+            Schema::create('empleados', function (Blueprint $table) {
+                $table->id('idEmpleados'); 
+                $table->unsignedBigInteger('idPersona');
+                // Definiendo valores por defecto para ENUM
+                $table->enum('Especialidad', ['Corte', 'Tinte', 'Masaje', 'Manicura']); 
+                $table->timestamps();
+
+                // Clave foránea a Personas
+                $table->foreign('idPersona')->references('idPersona')->on('personas')->onDelete('cascade');
+            });
+        }
+    }
 
     /**
      * Reverse the migrations.
