@@ -15,6 +15,7 @@ return new class extends Migration
         $table->id('idServicioxCita');
         $table->unsignedBigInteger('idServicio');
         $table->unsignedBigInteger('idCita');
+        $table->dateTime('FechaHora');
         $table->foreign('idServicio')->references('idServicio')->on('servicios')->onDelete('cascade');
         $table->foreign('idCita')->references('idCita')->on('citas')->onDelete('cascade');
         $table->timestamps();
